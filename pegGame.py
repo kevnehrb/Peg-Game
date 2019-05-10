@@ -2,7 +2,6 @@
 #root = tk.Tk()
 #root.mainloop()
 
-print("yahoo")
 class Board:
 
     def __init__(self):
@@ -43,6 +42,12 @@ class Board:
                       [13,12,11],
                       [14,9,5],
                       [14,13,12]]
+        self.solved = False
+        self.activePegs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+        self.removedPegs = [0]
+        self.totMoves = 0
+
+    def reset(self):
         self.solved = False
         self.activePegs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
         self.removedPegs = [0]
