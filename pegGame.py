@@ -4,6 +4,7 @@
 
 print("yahoo")
 class Board:
+
     def __init__(self):
         #each jump is represented by 3 numbers, (starting space, the jumped over space, and destination)
         self.jumps = [(0,1,3),
@@ -41,7 +42,33 @@ class Board:
                       (13,12,11),
                       (14,9,5),
                       (14,13,12)]
-        self.complete = False
+        self.solved = False
         self.activePegs = set([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
         self.removedPegs = [0]
         self.totMoves = 0
+
+    def spaceOpen(self,space):
+        for each in self.activePegs:
+            if each == space:
+                #there is a peg in the desired spot already
+                return False
+        return True
+
+    def availableMoves(self,selectedPeg):
+        #returns a list of all possible jumps the selected peg can make
+        possibleMoves = []
+
+        for each in self.jumps:
+            if each[0] == selectedPeg:
+                if self.spaceOpen(each[2]) == True and self.spaceOpen(each[1]) == False:
+                    possibleMoves.append(each)
+  
+        return possibleMoves
+
+    def makeJump(self, selectedPeg):
+        #jumps the peg, removes the jumped space from the active list and places it in the removed list
+
+
+b = Board()
+print(b.availableMoves(3))
+print("end")
