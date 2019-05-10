@@ -19,6 +19,7 @@ class Board:
                       [3,7,12],
                       [4,7,11],
                       [4,8,13],
+                      [5,2,0],
                       [5,4,3],
                       [5,8,12],
                       [5,9,14],
@@ -73,6 +74,26 @@ class Board:
         self.removedPegs.append(selectedJump[0])
         self.removedPegs.append(selectedJump[1])
         self.removedPegs.remove(selectedJump[2])
+        self.totMoves += 1
+
+    def outOfMoves(self):
+        #goes through active pegs and checks for all possible moves, if there are more return false, if theres 1 peg left, user wins else loses
+        possibleMoves = []
+
+        if len(self.activePegs) == 1:
+            #user has won
+            self.solved = True
+            return True
+
+        for each in self.activePegs:
+            possibleMoves = possibleMoves + self.availableMoves(each)
+ 
+        if not possibleMoves:
+            #there are no possible moves left
+            return True
+        else:
+            return False
+
 
 
 
@@ -85,10 +106,16 @@ class Board:
 
 
 b = Board()
-print(b.activePegs)
-print(b.removedPegs)
-b.makeJump((3,1,0))
-print(b.activePegs)
-print(b.removedPegs)
-print(b.availableMoves(5))
+#print(b.activePegs)
+#print(b.removedPegs)
+#b.makeJump((3,1,0))
+#print(b.activePegs)
+#print(b.removedPegs)
+#print(b.availableMoves(5))
+#print(b.totMoves)
+boole = b.outOfMoves()
+if boole == True:
+    print("true")
+else:
+    print("false")
 print("end")
