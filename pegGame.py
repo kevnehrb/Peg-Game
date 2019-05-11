@@ -24,6 +24,7 @@ class Main():
         self.activePegs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
         self.removedPegs = [0]
         self.totMoves = 0
+        self.sourceSelected = -1
 
         #self.play()
         
@@ -33,21 +34,21 @@ class Main():
     window.create_polygon(5, 300, 150, 5, 300, 300, fill="yellow")
 
     #create the board buttons
-    slot0 = window.create_oval(125, 50, 165, 90, fill="white", tags=("0",))
-    slot1 = window.create_oval(100, 100, 140, 140, fill="red")
-    slot2 = window.create_oval(150, 100, 190, 140, fill="red")
-    slot3 = window.create_oval(75, 150, 115, 190, fill="red")
-    slot4 = window.create_oval(125, 150, 165, 190, fill="red")
-    slot5 = window.create_oval(175, 150, 215, 190, fill="red")
-    slot6 = window.create_oval(50, 200, 90, 240, fill="red")
-    slot7 = window.create_oval(100, 200, 140, 240, fill="red")
-    slot8 = window.create_oval(150, 200, 190, 240, fill="red")
-    slot9 = window.create_oval(200, 200, 240, 240, fill="red")
-    slot10 = window.create_oval(25, 250, 65, 290, fill="red")
-    slot11 = window.create_oval(75, 250, 115, 290, fill="red")
-    slot12 = window.create_oval(125, 250, 165, 290, fill="red")
-    slot13 = window.create_oval(175, 250, 215, 290, fill="red")
-    slot14 = window.create_oval(225, 250, 265, 290, fill="red")
+    slot0 = window.create_oval(125, 50, 165, 90, fill="white", tags=(0,))
+    slot1 = window.create_oval(100, 100, 140, 140, fill="red", tags=(1,))
+    slot2 = window.create_oval(150, 100, 190, 140, fill="red", tags=(2,))
+    slot3 = window.create_oval(75, 150, 115, 190, fill="red", tags=(3,))
+    slot4 = window.create_oval(125, 150, 165, 190, fill="red", tags=(4,))
+    slot5 = window.create_oval(175, 150, 215, 190, fill="red", tags=(5,))
+    slot6 = window.create_oval(50, 200, 90, 240, fill="red", tags=(6,))
+    slot7 = window.create_oval(100, 200, 140, 240, fill="red", tags=(7,))
+    slot8 = window.create_oval(150, 200, 190, 240, fill="red", tags=(8,))
+    slot9 = window.create_oval(200, 200, 240, 240, fill="red", tags=(9,))
+    slot10 = window.create_oval(25, 250, 65, 290, fill="red", tags=(10,))
+    slot11 = window.create_oval(75, 250, 115, 290, fill="red", tags=(11,))
+    slot12 = window.create_oval(125, 250, 165, 290, fill="red", tags=(12,))
+    slot13 = window.create_oval(175, 250, 215, 290, fill="red", tags=(13,))
+    slot14 = window.create_oval(225, 250, 265, 290, fill="red", tags=(14,))
 
     #window.itemconfig(slot0, fill="blue") # change color
 
@@ -135,22 +136,23 @@ if __name__ == "__main__":
         current_color = b.window.itemcget(peg, 'fill')
 
         pegList = b.window.gettags(peg)
-        pegName = pegList[0]
-        print(pegName)
+        pegID = pegList[0]
+        pegID = int(pegID)
+        print(pegID)
 
         isPeg = b.window.type(peg)
         if isPeg == "oval":
-            if current_color == 'red':
-                if b.isSelected == False:
+            if b.sourceSelected == -1:
+                if current_color == 'red':
                     b.window.itemconfig(peg, fill='blue')
-                    b.isSelected = True
-
-            elif current_color == 'blue':
-                b.window.itemconfig(peg, fill='red') 
-                b.isSelected = False
+                    b.sourceSelected = pegID
             else:
-                if b.isSelected == True:
-                    print("imgay")
+                if current_color == 'blue':
+                    b.window.itemconfig(peg, fill='red') 
+                    b.sourceSelected = -1
+                elif current_color == 'white':
+                    pass
+                    #check if 2nd click and sourceSelected is a valid move, then do some funky shit roflmfao
 
     def makeMove(event):
         peg = b.window.find_closest(event.x, event.y)
@@ -172,11 +174,3 @@ if __name__ == "__main__":
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
     root.mainloop()
-
-    
-
-
-
-
-
-    #when peg is selected, 
