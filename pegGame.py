@@ -114,8 +114,19 @@ class Main():
         else:
             return False
          
-         
-   
+    def buildJumpVariable(self,source,destination):
+        #makes a list of the source, jump, and destination
+        jumpList = []
+        jumpList.append(source)
+        for each in self.jumps:
+            if each[0] == source and each[2] == destination:
+                jumpedPeg = each[1]
+        jumpList.append(jumpedPeg)
+        jumpList.append(destination)
+        return jumpList
+
+
+
 if __name__ == "__main__":
     b = Main(root)
 
@@ -128,30 +139,33 @@ if __name__ == "__main__":
             if current_color == 'red':
                 b.window.itemconfig(peg, fill='blue')
             else:
-                b.window.itemconfig(peg, fill='red') 
+                b.window.itemconfig(peg, fill='red')
+
+    def makeMove(event):
+        peg = b.window.find_closest(event.x, event.y)
+        #get the number id of the selected peg
+        #build a list of available moves using selected peg as source spot
+        #if the pegs color is white (signifying emptiness) or if the list of available moves is empty, invalid click don't register
+        
+        #else select peg and set source equal to tag number, this is the source spot
+       # b.window.itemconfig(peg, fill='blue')
+        #while following clicks are not valid jump, based on list of available moves [2]position
+            #ignore click
+        #make jump
+            #builtJump = b.buildJumpVariable(source, destination)
+            #b.makeJump(jump variable in for mat of [x,y,z])
+            #change color of source and jumped pegs to white to signify open space, change color of destination to red to signify occupied space
+
+
 
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
     root.mainloop()
 
+    
 
 
 
 
 
-
-
-b = Board()
-#print(b.activePegs)
-#print(b.removedPegs)
-#b.makeJump((3,1,0))
-#print(b.activePegs)
-#print(b.removedPegs)
-#print(b.availableMoves(5))
-#print(b.totMoves)
-boole = b.outOfMoves()
-if boole == True:
-    print("true")
-else:
-    print("false")
-print("end")
+    #when peg is selected, 
