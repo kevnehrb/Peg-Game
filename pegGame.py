@@ -1,3 +1,4 @@
+
 import tkinter
 from tkinter import *
 from tkinter import TOP, BOTTOM
@@ -30,8 +31,8 @@ class Main():
         
     window = Canvas(root, width = 300, height = 300)
     window.pack()
-    window.create_rectangle(5, 5, 300, 300, fill="black")
-    window.create_polygon(5, 300, 150, 5, 300, 300, fill="yellow")
+    window.create_rectangle(5, 5, 300, 300, fill="black", tags=("background",))
+    window.create_polygon(5, 300, 150, 5, 300, 300, fill="yellow", tags=("board",))
 
     #create the board buttons
     slot0 = window.create_oval(125, 50, 165, 90, fill="white", tags=(0,))
@@ -138,7 +139,6 @@ if __name__ == "__main__":
         pegList = b.window.gettags(peg)
         pegID = pegList[0]
         pegID = int(pegID)
-        print(pegID)
 
         isPeg = b.window.type(peg)
         if isPeg == "oval":
@@ -151,36 +151,81 @@ if __name__ == "__main__":
                     b.window.itemconfig(peg, fill='red') 
                     b.sourceSelected = -1
                 elif current_color == 'white':
-                    pass
-                    #check if 2nd click and sourceSelected is a valid move, then do some funky shit roflmfao
+                    #check to make sure if 2nd click and sourceSelected is a valid move
                     potentialMoves = b.availableMoves(b.sourceSelected)
-                    if not potentialMoves:
-                        #there are no moves for this peg, retuirn or some shit
-                    else:
+                    if potentialMoves:
                         for each in potentialMoves:
                             if each[2] == pegID:
                                 theJump = b.buildJumpVariable(b.sourceSelected, pegID)
                         b.makeJump(theJump)
-                        obliterated = theJump[1]
-                        #enter code that changes the colors, obliterated is the int value of the peg that should be removed
 
-    def makeMove(event):
-        peg = b.window.find_closest(event.x, event.y)
-        #get the number id of the selected peg
-        #build a list of available moves using selected peg as source spot
-        #if the pegs color is white (signifying emptiness) or if the list of available moves is empty, invalid click don't register
-        
-        #else select peg and set source equal to tag number, this is the source spot
-       # b.window.itemconfig(peg, fill='blue')
-        #while following clicks are not valid jump, based on list of available moves [2]position
-            #ignore click
-        #make jump
-            #builtJump = b.buildJumpVariable(source, destination)
-            #b.makeJump(jump variable in for mat of [x,y,z])
-            #change color of source and jumped pegs to white to signify open space, change color of destination to red to signify occupied space
+                        if(theJump[0] == 0):
+                            b.window.itemconfig(b.slot0, fill='white')
+                        elif(theJump[0] == 1):
+                            b.window.itemconfig(b.slot1, fill='white')
+                        elif(theJump[0] == 2):
+                            b.window.itemconfig(b.slot2, fill='white')
+                        elif(theJump[0] == 3):
+                            b.window.itemconfig(b.slot3, fill='white')
+                        elif(theJump[0] == 4):
+                            b.window.itemconfig(b.slot4, fill='white')
+                        elif(theJump[0] == 5):
+                            b.window.itemconfig(b.slot5, fill='white')
+                        elif(theJump[0] == 6):
+                            b.window.itemconfig(b.slot6, fill='white')
+                        elif(theJump[0] == 7):
+                            b.window.itemconfig(b.slot7, fill='white')
+                        elif(theJump[0] == 8):
+                            b.window.itemconfig(b.slot8, fill='white')
+                        elif(theJump[0] == 9):
+                            b.window.itemconfig(b.slot9, fill='white')
+                        elif(theJump[0] == 10):
+                            b.window.itemconfig(b.slot10, fill='white')
+                        elif(theJump[0] == 11):
+                            b.window.itemconfig(b.slot11, fill='white')
+                        elif(theJump[0] == 12):
+                            b.window.itemconfig(b.slot12, fill='white')
+                        elif(theJump[0] == 13):
+                            b.window.itemconfig(b.slot13, fill='white')
+                        elif(theJump[0] == 14):
+                            b.window.itemconfig(b.slot14, fill='white')
 
+                        if(theJump[1] == 0):
+                            b.window.itemconfig(b.slot0, fill='white')
+                        elif(theJump[1] == 1):
+                            b.window.itemconfig(b.slot1, fill='white')
+                        elif(theJump[1] == 2):
+                            b.window.itemconfig(b.slot2, fill='white')
+                        elif(theJump[1] == 3):
+                            b.window.itemconfig(b.slot3, fill='white')
+                        elif(theJump[1] == 4):
+                            b.window.itemconfig(b.slot4, fill='white')
+                        elif(theJump[1] == 5):
+                            b.window.itemconfig(b.slot5, fill='white')
+                        elif(theJump[1] == 6):
+                            b.window.itemconfig(b.slot6, fill='white')
+                        elif(theJump[1] == 7):
+                            b.window.itemconfig(b.slot7, fill='white')
+                        elif(theJump[1] == 8):
+                            b.window.itemconfig(b.slot8, fill='white')
+                        elif(theJump[1] == 9):
+                            b.window.itemconfig(b.slot9, fill='white')
+                        elif(theJump[1] == 10):
+                            b.window.itemconfig(b.slot10, fill='white')
+                        elif(theJump[1] == 11):
+                            b.window.itemconfig(b.slot11, fill='white')
+                        elif(theJump[1] == 12):
+                            b.window.itemconfig(b.slot12, fill='white')
+                        elif(theJump[1] == 13):
+                            b.window.itemconfig(b.slot13, fill='white')
+                        elif(theJump[1] == 14):
+                            b.window.itemconfig(b.slot14, fill='white')
+
+                        b.window.itemconfig(peg, fill='red')
+                        b.sourceSelected = -1
 
 
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
+    root.mainloop()
     root.mainloop()
