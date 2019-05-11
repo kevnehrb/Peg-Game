@@ -134,12 +134,23 @@ if __name__ == "__main__":
         peg = b.window.find_closest(event.x, event.y)
         current_color = b.window.itemcget(peg, 'fill')
 
+        pegList = b.window.gettags(peg)
+        pegName = pegList[0]
+        print(pegName)
+
         isPeg = b.window.type(peg)
         if isPeg == "oval":
             if current_color == 'red':
-                b.window.itemconfig(peg, fill='blue')
+                if b.isSelected == False:
+                    b.window.itemconfig(peg, fill='blue')
+                    b.isSelected = True
+
+            elif current_color == 'blue':
+                b.window.itemconfig(peg, fill='red') 
+                b.isSelected = False
             else:
-                b.window.itemconfig(peg, fill='red')
+                if b.isSelected == True:
+                    print("imgay")
 
     def makeMove(event):
         peg = b.window.find_closest(event.x, event.y)
