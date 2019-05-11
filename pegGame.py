@@ -113,28 +113,26 @@ class Main():
             return True
         else:
             return False
-
-    def onclick(event):
-        peg = window.find_closest(event.x, event.y)
-
-        current_color = window.itemcget(peg, 'fill')
-
-        isPeg = window.type(peg)
-        if isPeg == "oval":
-            if current_color == 'red':
-                window.itemconfig(peg, fill='blue')
-            else:
-                window.itemconfig(peg, fill='red') 
          
          
    
 if __name__ == "__main__":
-    Main(root)
+    b = Main(root)
+
+    def onclick(event):
+        peg = b.window.find_closest(event.x, event.y)
+        current_color = b.window.itemcget(peg, 'fill')
+
+        isPeg = b.window.type(peg)
+        if isPeg == "oval":
+            if current_color == 'red':
+                b.window.itemconfig(peg, fill='blue')
+            else:
+                b.window.itemconfig(peg, fill='red') 
+
+    b.window.bind('<ButtonPress-1>', onclick)
+    b.window.pack()
     root.mainloop()
-
-
-
-
 
 
 
