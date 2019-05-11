@@ -153,6 +153,16 @@ if __name__ == "__main__":
                 elif current_color == 'white':
                     pass
                     #check if 2nd click and sourceSelected is a valid move, then do some funky shit roflmfao
+                    potentialMoves = b.availableMoves(b.sourceSelected)
+                    if not potentialMoves:
+                        #there are no moves for this peg, retuirn or some shit
+                    else:
+                        for each in potentialMoves:
+                            if each[2] == pegID:
+                                theJump = b.buildJumpVariable(b.sourceSelected, pegID)
+                        b.makeJump(theJump)
+                        obliterated = theJump[1]
+                        #enter code that changes the colors, obliterated is the int value of the peg that should be removed
 
     def makeMove(event):
         peg = b.window.find_closest(event.x, event.y)
