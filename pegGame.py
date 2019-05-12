@@ -1,7 +1,10 @@
 import tkinter
+import time
 from tkinter import *
 from tkinter import BOTTOM
 from tkinter import messagebox
+
+
 
 root = Tk()
 
@@ -11,7 +14,6 @@ optionFrame.pack(side = BOTTOM)
 class Main():
     def __init__(self, master):
         self.master = master
-
         self.createOptionButtons()
         #each jump is represented by 3 numbers, (starting space, the jumped over space, and destination)
         self.jumps = [[0,1,3], [0,2,5], [1,3,6], [1,4,8], [2,4,7], [2,5,9], 
@@ -55,14 +57,84 @@ class Main():
         self.restartButton = Button(optionFrame, text = "Restart", fg = "blue", command = self.reset)
         self.restartButton.pack(side="left")
 
-        self.statsButton = Button(optionFrame, text = "Statistics", fg = "purple")
+        self.statsButton = Button(optionFrame, text = "Statistics", fg = "purple", command = self.getStats)
         self.statsButton.pack(side="left")
 
         self.quitButton = Button(optionFrame, text = "Quit", fg = "red", command = self.master.destroy)
         self.quitButton.pack(side="left")
         
+    def statUpdateMoves(self):
+        file = open("config.txt", "r")
+        wordLine = file.readline()
+        wordList = wordLine.split()
+        file.close()
+        currMoves = int(wordList[1])
+        currMoves += self.totMoves
+        wordList[1] = str(currMoves)
+        newLine = " ".join(wordList)
+        file = open("config.txt", "w")
+        file.write(newLine)
+        file.close()
+
+    def statUpdateGamesAttempted(self):
+        file = open("config.txt", "r")
+        wordLine = file.readline()
+        wordList = wordLine.split()
+        file.close()
+        currAttempts = int(wordList[5])
+        currAttempts += 1
+        wordList[5] = str(currAttempts)
+        newLine = " ".join(wordList)
+        file = open("config.txt", "w")
+        file.write(newLine)
+        file.close()
+
+    def statUpdateGamesWon(self):
+        file = open("config.txt", "r")
+        wordLine = file.readline()
+        wordList = wordLine.split()
+        file.close()
+        currGames = int(wordList[3])
+        currGames += 1
+        wordList[3] = str(currGames)
+        newLine = " ".join(wordList)
+        file = open("config.txt", "w")
+        file.write(newLine)
+        file.close()
+
+    def statUpdateTime(self, newTime):
+        file = open("config.txt", "r")
+        wordLine = file.readline()
+        wordList = wordLine.split()
+        file.close()
+        
+        if(wordList[7] == 'none'):
+            wordList[7] = str(newTime)
+
+        currSeconds = float(wordList[7])
+        if(newTime < currSeconds):
+            wordList[7] = str(newTime)
+        else:
+            wordList[7] = str(currSeconds)
+        newLine = " ".join(wordList)
+        file = open("config.txt", "w")
+        file.write(newLine)
+        file.close()
+
+    def getStats(self):
+        file = open("config.txt", "r")
+        wordLine = file.readline()
+        wordList = wordLine.split()
+        file.close()
+        newLine = wordList[0] + " " + wordList[1] + "\n" + wordList[2] + " " + wordList[3] + "\n" + wordList[4] + " " + wordList[5] + "\n" + wordList[6] + " " + wordList[7] + " seconds"
+        messagebox.showinfo("Statistics", newLine)
+
 
     def reset(self):
+
+        self.statUpdateMoves()
+        self.statUpdateGamesAttempted()
+
         self.solved = False
         self.activePegs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
         self.removedPegs = [0]
@@ -84,6 +156,8 @@ class Main():
         self.window.itemconfig(self.slot12, fill='red')
         self.window.itemconfig(self.slot13, fill='red')
         self.window.itemconfig(self.slot14, fill='red')
+
+        startTime = time.time()
 
     def spaceOpen(self,space):
         for each in self.activePegs:
@@ -128,7 +202,7 @@ class Main():
 
 if __name__ == "__main__":
     b = Main(root)
-
+    b.startTime = time.time()
     def onclick(event):
 
         peg = b.window.find_closest(event.x, event.y)
@@ -226,12 +300,15 @@ if __name__ == "__main__":
                         if len(b.activePegs) == 1:
                             #user has won
                             b.solved = True
+                            b.statUpdateGamesWon()
+                            endTime = time.time()
+                            newTime = endTime - b.startTime
+                            b.statUpdateTime(newTime)
                             messagebox.showinfo("Winner!", "You won!")
                         else:
                             possibleMoves = []
                             for each in b.activePegs:
                                 possibleMoves = possibleMoves + b.availableMoves(each)
-                            print(possibleMoves)
                             if not possibleMoves:
                                 #there are no more moves left. return
                                 messagebox.showinfo("Try Again", "You lost, hit restart to try again!")
@@ -240,3 +317,6 @@ if __name__ == "__main__":
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
     root.mainloop()
+    file = open("config.txt", "r")
+    wordLine = file.readline()
+    wordList = wordLine.split()
