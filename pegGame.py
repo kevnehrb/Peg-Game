@@ -8,6 +8,7 @@ from tkinter import messagebox
 
 root = Tk()
 
+#frame for the buttons
 optionFrame = Frame(root)
 optionFrame.pack(side = BOTTOM)
 
@@ -51,8 +52,7 @@ class Main():
     slot13 = window.create_oval(175, 250, 215, 290, fill="red", tags=(13,))
     slot14 = window.create_oval(225, 250, 265, 290, fill="red", tags=(14,))
 
-    #window.itemconfig(slot0, fill="blue") # change color
-
+    # creates the bottom row of buttons in the optionsFrame
     def createOptionButtons(self):
         self.restartButton = Button(optionFrame, text = "Restart", fg = "blue", command = self.reset)
         self.restartButton.pack(side="left")
@@ -62,7 +62,8 @@ class Main():
 
         self.quitButton = Button(optionFrame, text = "Quit", fg = "red", command = self.master.destroy)
         self.quitButton.pack(side="left")
-        
+    
+    # adds the amount of moves in a current game to the total moves stat
     def statUpdateMoves(self):
         file = open("config.txt", "r")
         wordLine = file.readline()
@@ -76,6 +77,7 @@ class Main():
         file.write(newLine)
         file.close()
 
+    # will add 1 to games attempted every time a user plays a game
     def statUpdateGamesAttempted(self):
         file = open("config.txt", "r")
         wordLine = file.readline()
@@ -89,6 +91,7 @@ class Main():
         file.write(newLine)
         file.close()
 
+    # will add 1 to games won when a user wins the game
     def statUpdateGamesWon(self):
         file = open("config.txt", "r")
         wordLine = file.readline()
@@ -102,6 +105,7 @@ class Main():
         file.write(newLine)
         file.close()
 
+    # checks to see if a game won is a new record finish
     def statUpdateTime(self, newTime):
         file = open("config.txt", "r")
         wordLine = file.readline()
@@ -121,6 +125,7 @@ class Main():
         file.write(newLine)
         file.close()
 
+    #obtain current stats to be given in a message box to the user when they ask for it
     def getStats(self):
         file = open("config.txt", "r")
         wordLine = file.readline()
@@ -129,7 +134,7 @@ class Main():
         newLine = wordList[0] + " " + wordList[1] + "\n" + wordList[2] + " " + wordList[3] + "\n" + wordList[4] + " " + wordList[5] + "\n" + wordList[6] + " " + wordList[7] + " seconds"
         messagebox.showinfo("Statistics", newLine)
 
-
+    # resets the board back to the beginning
     def reset(self):
 
         self.statUpdateMoves()
@@ -159,6 +164,7 @@ class Main():
 
         startTime = time.time()
 
+    # used in avaliable moves to check if there is a peg in a particular slot
     def spaceOpen(self,space):
         for each in self.activePegs:
             if each == space:
@@ -203,6 +209,7 @@ class Main():
 if __name__ == "__main__":
     b = Main(root)
     b.startTime = time.time()
+    
     def onclick(event):
 
         peg = b.window.find_closest(event.x, event.y)
@@ -317,7 +324,4 @@ if __name__ == "__main__":
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
     root.mainloop()
-    file = open("config.txt", "r")
-    wordLine = file.readline()
-    wordList = wordLine.split()
     
