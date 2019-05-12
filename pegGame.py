@@ -111,24 +111,6 @@ class Main():
         self.removedPegs.append(selectedJump[1])
         self.removedPegs.remove(selectedJump[2])
         self.totMoves += 1
-
-    def outOfMoves(self):
-        #goes through active pegs and checks for all possible moves, if there are more return false, if theres 1 peg left, user wins else loses
-        possibleMoves = []
-
-        if len(self.activePegs) == 1:
-            #user has won
-            self.solved = True
-            return True
-
-        for each in self.activePegs:
-            possibleMoves = possibleMoves + self.availableMoves(each)
- 
-        if not possibleMoves:
-            #there are no possible moves left
-            return True
-        else:
-            return False
          
     def buildJumpVariable(self,source,destination):
         #makes a list of the source, jump, and destination
@@ -150,101 +132,109 @@ if __name__ == "__main__":
         peg = b.window.find_closest(event.x, event.y)
         current_color = b.window.itemcget(peg, 'fill')
 
-        
-        if(b.outOfMoves == False):
-            isPeg = b.window.type(peg)
-            if isPeg == "oval":
+        if len(b.activePegs) == 1:
+            #user has won
+            b.solved = True
+            print("hey you won")
+            return
+        possibleMoves = []
+        for each in b.activePegs:
+            possibleMoves = possibleMoves + b.availableMoves(each)
+        print(possibleMoves)
+        if not possibleMoves:
+            #there are no more moves left. return
+            print("looser looser stinky eggman")
+            return
 
-                pegList = b.window.gettags(peg)
-                pegID = pegList[0]
-                pegID = int(pegID)
 
-                if b.sourceSelected == -1:
-                    if current_color == 'red':
-                        b.window.itemconfig(peg, fill='blue')
-                        b.sourceSelected = pegID
-                else:
-                    if current_color == 'blue':
-                        b.window.itemconfig(peg, fill='red') 
-                        b.sourceSelected = -1
-                    elif current_color == 'white':
-                        #check to make sure if 2nd click and sourceSelected is a valid move
-                        potentialMoves = b.availableMoves(b.sourceSelected)
-                        if potentialMoves:
-                            for each in potentialMoves:
-                                if each[2] == pegID:
-                                    theJump = b.buildJumpVariable(b.sourceSelected, pegID)
-                            b.makeJump(theJump)
+        isPeg = b.window.type(peg)
+        if isPeg == "oval":
 
-                            if(theJump[0] == 0):
-                                b.window.itemconfig(b.slot0, fill='white')
-                            elif(theJump[0] == 1):
-                                b.window.itemconfig(b.slot1, fill='white')
-                            elif(theJump[0] == 2):
-                                b.window.itemconfig(b.slot2, fill='white')
-                            elif(theJump[0] == 3):
-                                b.window.itemconfig(b.slot3, fill='white')
-                            elif(theJump[0] == 4):
-                                b.window.itemconfig(b.slot4, fill='white')
-                            elif(theJump[0] == 5):
-                                b.window.itemconfig(b.slot5, fill='white')
-                            elif(theJump[0] == 6):
-                                b.window.itemconfig(b.slot6, fill='white')
-                            elif(theJump[0] == 7):
-                                b.window.itemconfig(b.slot7, fill='white')
-                            elif(theJump[0] == 8):
-                                b.window.itemconfig(b.slot8, fill='white')
-                            elif(theJump[0] == 9):
-                                b.window.itemconfig(b.slot9, fill='white')
-                            elif(theJump[0] == 10):
-                                b.window.itemconfig(b.slot10, fill='white')
-                            elif(theJump[0] == 11):
-                                b.window.itemconfig(b.slot11, fill='white')
-                            elif(theJump[0] == 12):
-                                b.window.itemconfig(b.slot12, fill='white')
-                            elif(theJump[0] == 13):
-                                b.window.itemconfig(b.slot13, fill='white')
-                            elif(theJump[0] == 14):
-                                b.window.itemconfig(b.slot14, fill='white')
+            pegList = b.window.gettags(peg)
+            pegID = pegList[0]
+            pegID = int(pegID)
 
-                            if(theJump[1] == 0):
-                                b.window.itemconfig(b.slot0, fill='white')
-                            elif(theJump[1] == 1):
-                                b.window.itemconfig(b.slot1, fill='white')
-                            elif(theJump[1] == 2):
-                                b.window.itemconfig(b.slot2, fill='white')
-                            elif(theJump[1] == 3):
-                                b.window.itemconfig(b.slot3, fill='white')
-                            elif(theJump[1] == 4):
-                                b.window.itemconfig(b.slot4, fill='white')
-                            elif(theJump[1] == 5):
-                                b.window.itemconfig(b.slot5, fill='white')
-                            elif(theJump[1] == 6):
-                                b.window.itemconfig(b.slot6, fill='white')
-                            elif(theJump[1] == 7):
-                                b.window.itemconfig(b.slot7, fill='white')
-                            elif(theJump[1] == 8):
-                                b.window.itemconfig(b.slot8, fill='white')
-                            elif(theJump[1] == 9):
-                                b.window.itemconfig(b.slot9, fill='white')
-                            elif(theJump[1] == 10):
-                                b.window.itemconfig(b.slot10, fill='white')
-                            elif(theJump[1] == 11):
-                                b.window.itemconfig(b.slot11, fill='white')
-                            elif(theJump[1] == 12):
-                                b.window.itemconfig(b.slot12, fill='white')
-                            elif(theJump[1] == 13):
-                                b.window.itemconfig(b.slot13, fill='white')
-                            elif(theJump[1] == 14):
-                                b.window.itemconfig(b.slot14, fill='white')
-
-                            b.window.itemconfig(peg, fill='red')
-                            b.sourceSelected = -1
-        else:
-            if(b.solved == True):
-                print("egg win")
+            if b.sourceSelected == -1:
+                if current_color == 'red':
+                    b.window.itemconfig(peg, fill='blue')
+                    b.sourceSelected = pegID
             else:
-                print("egg lose")
+                if current_color == 'blue':
+                    b.window.itemconfig(peg, fill='red') 
+                    b.sourceSelected = -1
+                elif current_color == 'white':
+                    #check to make sure if 2nd click and sourceSelected is a valid move
+                    potentialMoves = b.availableMoves(b.sourceSelected)
+                    if potentialMoves:
+                        for each in potentialMoves:
+                            if each[2] == pegID:
+                                theJump = b.buildJumpVariable(b.sourceSelected, pegID)
+                        b.makeJump(theJump)
+
+                        if(theJump[0] == 0):
+                            b.window.itemconfig(b.slot0, fill='white')
+                        elif(theJump[0] == 1):
+                            b.window.itemconfig(b.slot1, fill='white')
+                        elif(theJump[0] == 2):
+                            b.window.itemconfig(b.slot2, fill='white')
+                        elif(theJump[0] == 3):
+                            b.window.itemconfig(b.slot3, fill='white')
+                        elif(theJump[0] == 4):
+                            b.window.itemconfig(b.slot4, fill='white')
+                        elif(theJump[0] == 5):
+                            b.window.itemconfig(b.slot5, fill='white')
+                        elif(theJump[0] == 6):
+                            b.window.itemconfig(b.slot6, fill='white')
+                        elif(theJump[0] == 7):
+                            b.window.itemconfig(b.slot7, fill='white')
+                        elif(theJump[0] == 8):
+                            b.window.itemconfig(b.slot8, fill='white')
+                        elif(theJump[0] == 9):
+                            b.window.itemconfig(b.slot9, fill='white')
+                        elif(theJump[0] == 10):
+                            b.window.itemconfig(b.slot10, fill='white')
+                        elif(theJump[0] == 11):
+                            b.window.itemconfig(b.slot11, fill='white')
+                        elif(theJump[0] == 12):
+                            b.window.itemconfig(b.slot12, fill='white')
+                        elif(theJump[0] == 13):
+                            b.window.itemconfig(b.slot13, fill='white')
+                        elif(theJump[0] == 14):
+                            b.window.itemconfig(b.slot14, fill='white')
+
+                        if(theJump[1] == 0):
+                            b.window.itemconfig(b.slot0, fill='white')
+                        elif(theJump[1] == 1):
+                            b.window.itemconfig(b.slot1, fill='white')
+                        elif(theJump[1] == 2):
+                            b.window.itemconfig(b.slot2, fill='white')
+                        elif(theJump[1] == 3):
+                            b.window.itemconfig(b.slot3, fill='white')
+                        elif(theJump[1] == 4):
+                            b.window.itemconfig(b.slot4, fill='white')
+                        elif(theJump[1] == 5):
+                            b.window.itemconfig(b.slot5, fill='white')
+                        elif(theJump[1] == 6):
+                            b.window.itemconfig(b.slot6, fill='white')
+                        elif(theJump[1] == 7):
+                            b.window.itemconfig(b.slot7, fill='white')
+                        elif(theJump[1] == 8):
+                            b.window.itemconfig(b.slot8, fill='white')
+                        elif(theJump[1] == 9):
+                            b.window.itemconfig(b.slot9, fill='white')
+                        elif(theJump[1] == 10):
+                            b.window.itemconfig(b.slot10, fill='white')
+                        elif(theJump[1] == 11):
+                            b.window.itemconfig(b.slot11, fill='white')
+                        elif(theJump[1] == 12):
+                            b.window.itemconfig(b.slot12, fill='white')
+                        elif(theJump[1] == 13):
+                            b.window.itemconfig(b.slot13, fill='white')
+                        elif(theJump[1] == 14):
+                            b.window.itemconfig(b.slot14, fill='white')
+
+                        b.window.itemconfig(peg, fill='red')
+                        b.sourceSelected = -1
 
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
