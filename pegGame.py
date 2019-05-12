@@ -320,3 +320,4 @@ if __name__ == "__main__":
     file = open("config.txt", "r")
     wordLine = file.readline()
     wordList = wordLine.split()
+    
