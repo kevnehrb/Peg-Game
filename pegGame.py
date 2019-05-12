@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import *
 from tkinter import BOTTOM
+from tkinter import messagebox
 
 root = Tk()
 
@@ -129,23 +130,9 @@ if __name__ == "__main__":
     b = Main(root)
 
     def onclick(event):
+
         peg = b.window.find_closest(event.x, event.y)
         current_color = b.window.itemcget(peg, 'fill')
-
-        if len(b.activePegs) == 1:
-            #user has won
-            b.solved = True
-            print("hey you won")
-            return
-        possibleMoves = []
-        for each in b.activePegs:
-            possibleMoves = possibleMoves + b.availableMoves(each)
-        print(possibleMoves)
-        if not possibleMoves:
-            #there are no more moves left. return
-            print("looser looser stinky eggman")
-            return
-
 
         isPeg = b.window.type(peg)
         if isPeg == "oval":
@@ -235,6 +222,20 @@ if __name__ == "__main__":
 
                         b.window.itemconfig(peg, fill='red')
                         b.sourceSelected = -1
+
+                        if len(b.activePegs) == 1:
+                            #user has won
+                            b.solved = True
+                            messagebox.showinfo("Winner!", "You won!")
+                        else:
+                            possibleMoves = []
+                            for each in b.activePegs:
+                                possibleMoves = possibleMoves + b.availableMoves(each)
+                            print(possibleMoves)
+                            if not possibleMoves:
+                                #there are no more moves left. return
+                                messagebox.showinfo("Try Again", "You lost, hit restart to try again!")
+                        
 
     b.window.bind('<ButtonPress-1>', onclick)
     b.window.pack()
