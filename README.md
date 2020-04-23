@@ -1,2 +1,2 @@
 # Peg-Game
-crackerbarrel boys
+crackerbarrel peg game
